@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mini Drive</title>
+    <style>
+        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background: #eef2f3; text-align: center; padding: 20px; }
+        .container { max-width: 800px; margin: 0 auto; background: white; padding: 30px; border-radius: 15px; box-shadow: 0 10px 20px rgba(0,0,0,0.1); }
+        h1 { color: #333; }
+        
+        /* Upload Alanı */
+        .upload-box { border: 2px dashed #3b82f6; padding: 30px; border-radius: 10px; margin-bottom: 30px; background: #f8fafc; }
+        input[type="file"] { margin-bottom: 10px; }
+        button { background: #3b82f6; color: white; border: none; padding: 10px 20px; border-radius: 5px; cursor: pointer; font-size: 1rem; }
+        button:hover { background: #2563eb; }
+
+        /* Galeri */
+        .gallery { display: grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 15px; }
+        .file-card { background: #fff; border: 1px solid #ddd; border-radius: 8px; overflow: hidden; transition: transform 0.2s; }
+        .file-card:hover { transform: translateY(-5px); box-shadow: 0 5px 15px rgba(0,0,0,0.1); }
+        .file-preview { height: 120px; background: #eee; display: flex; align-items: center; justify-content: center; font-size: 3rem; color: #888; overflow: hidden;}
+        .file-preview img { width: 100%; height: 100%; object-fit: cover; }
+        .file-name { padding: 10px; font-size: 0.8rem; word-break: break-all; color: #555; }
+        a { text-decoration: none; color: inherit; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>☁️ Mini Drive</h1>
+        
+        <div class="upload-box">
+            <form method="post" enctype="multipart/form-data">
+                <input type="file" name="file">
+                <button type="submit">Buluta Yükle</button>
+            </form>
+        </div>
+
+        <div class="gallery">
+            {% for file in files %}
+            <a href="{{ url_for('uploaded_file', filename=file) }}" target="_blank">
+                <div class="file-card">
+                    <div class="file-preview">
+                        {% if file.endswith(('.png', '.jpg', '.jpeg', '.gif')) %}
+                            <img src="{{ url_for('uploaded_file', filename=file) }}">
+                        {% else %}
+                            📄
+                        {% endif %}
+                    </div>
+                    <div class="file-name">{{ file }}</div>
+                </div>
+            </a>
+            {% endfor %}
+        </div>
+    </div>
+</body>
+</html>
